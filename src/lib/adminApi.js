@@ -24,6 +24,10 @@ export const COLUMNS = {
   ],
   cute_messages: ['message', 'is_published'],
   flirty_lines: ['message', 'is_published'],
+  her_photos: [
+    'image_path', 'image_width', 'image_height', 'alt_text', 'caption', 'show_on_landing', 'show_in_ribbon',
+    'show_in_chapters', 'show_on_reasons', 'show_on_surprise', 'show_on_soundtrack', 'is_published',
+  ],
   memory_categories: ['name', 'slug'],
   memories: [
     'title', 'caption', 'image_path', 'image_width', 'image_height', 'alt_text', 'taken_on', 'location',
@@ -42,7 +46,7 @@ export const COLUMNS = {
 }
 
 const HAS_PLACEHOLDER = new Set([
-  'cute_messages', 'flirty_lines', 'memories', 'quiz_questions', 'chat_screenshots', 'love_notes', 'timeline_entries',
+  'cute_messages', 'flirty_lines', 'her_photos', 'memories', 'quiz_questions', 'chat_screenshots', 'love_notes', 'timeline_entries',
   'mood_messages', 'soundtrack_tracks', 'open_when_letters', 'final_surprise',
 ])
 const SINGLETONS = new Set(['site_settings', 'hero_content', 'final_surprise'])

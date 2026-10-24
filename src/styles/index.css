@@ -258,6 +258,27 @@
   }
 }
 
+/* Drifting row of photos on the home page (the track holds two identical halves). */
+@keyframes olu-ribbon {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.olu-ribbon-track {
+  animation: olu-ribbon linear infinite;
+}
+
+.olu-ribbon-track[data-paused='true'] {
+  animation-play-state: paused;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .olu-ribbon:hover .olu-ribbon-track {
+    animation-play-state: paused;
+  }
+}
+
 /* Respect the visitor's reduced-motion preference for all CSS-driven loops. */
 @media (prefers-reduced-motion: reduce) {
   *,

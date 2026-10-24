@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { ExternalLink, LockKeyhole, Mic, Music, Play } from 'lucide-react'
 import PageShell from '@/components/PageShell'
+import PhotoBackdrop from '@/components/PhotoBackdrop'
 import ContentState from '@/components/ContentState'
 import AudioPlayer from '@/components/AudioPlayer'
 import PlaceholderBadge from '@/components/PlaceholderBadge'
@@ -143,6 +144,7 @@ export default function SoundtrackPage() {
   const query = useContent('listTracks')
   return (
     <PageShell chapterId="soundtrack" subtitle={settings.soundtrack_intro}>
+      <PhotoBackdrop start={0} />
       <ContentState
         query={query}
         loadingMessage="Tuning the little radio…"

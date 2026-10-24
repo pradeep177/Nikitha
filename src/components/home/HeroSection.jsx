@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion'
 import { ArrowDown, Gift, Sparkles } from 'lucide-react'
 import { Link } from 'react-router'
-import SmartImage from '../SmartImage'
+import PhotoStack from './PhotoStack'
 import { HeartShape, Sparkle, DoodleArrow } from '../illustrations/Doodles'
 import Planet from '../illustrations/Planet'
 import AnimatedHeart from '../AnimatedHeart'
@@ -56,29 +56,16 @@ function HeroHeading({ text }) {
   )
 }
 
-function HeroPhoto({ hero, name }) {
+function HeroPhoto({ photos, name }) {
   return (
     <motion.figure
       className="relative mx-auto w-[min(78vw,22rem)] lg:w-[25rem]"
       initial={{ opacity: 0, scale: 0.82, rotate: -8, y: 30 }}
       animate={{ opacity: 1, scale: 1, rotate: 3, y: 0 }}
       transition={{ delay: 0.55, type: 'spring', stiffness: 100, damping: 15 }}
+      aria-label={photos.length > 1 ? `Photos of ${name}` : undefined}
     >
-      <div className="relative rounded-md bg-white p-3 pb-4 shadow-lift sm:p-4 sm:pb-5">
-        <span className="absolute -top-4 left-1/2 z-10 h-7 w-24 -translate-x-1/2 rotate-[-5deg] rounded-sm bg-butter/85 shadow-sm" aria-hidden="true" />
-        <SmartImage
-          src={hero.photo_url}
-          alt={personalize(hero.photo_alt, name)}
-          aspect="4/5"
-          eager
-          className="rounded-sm"
-          placeholderLabel="A photo of you will live here ♡"
-          seed={1}
-        />
-        <figcaption className="px-8 pt-3 text-center font-hand text-2xl leading-tight text-ink-soft">
-          {personalize(hero.photo_caption, name)}
-        </figcaption>
-      </div>
+      <PhotoStack photos={photos} name={name} placeholderLabel="A photo of you will live here ♡" />
 
       {ORBIT_HEARTS.map((heart, i) => (
         <motion.span
@@ -115,7 +102,7 @@ function HeroPhoto({ hero, name }) {
   )
 }
 
-export default function HeroSection({ hero, name, signature, onSecret, onScrollHint }) {
+export default function HeroSection({ hero, photos, name, signature, onSecret, onScrollHint }) {
   return (
     <section className="relative mx-auto flex min-h-[calc(100dvh-5.5rem)] max-w-6xl flex-col px-5 pt-8 pb-6 md:pt-12" aria-label="Welcome">
       <motion.div
@@ -151,7 +138,7 @@ export default function HeroSection({ hero, name, signature, onSecret, onScrollH
         </div>
 
         <div className="pb-10 md:col-start-2 md:row-span-2 md:row-start-1 md:pb-0">
-          <HeroPhoto hero={hero} name={name} />
+          <HeroPhoto photos={photos} name={name} />
         </div>
 
         <div className="text-center md:col-start-1 md:row-start-2 md:self-start md:text-left">

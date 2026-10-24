@@ -14,7 +14,7 @@ const fields = [
   { name: 'message', label: 'Welcome message', type: 'textarea', rows: 4, maxLength: 1000, help: NAME_HELP },
   { name: 'affection_line', label: 'Handwritten affectionate line', type: 'textarea', rows: 2, maxLength: 400 },
   { name: 'h-photo', type: 'heading', label: 'Her photograph' },
-  { name: 'photo_path', label: 'Hero photo', type: 'media', media: { bucket: 'public-media', folder: 'hero', kind: 'image' }, help: 'Shown in a Polaroid frame on the landing page. If empty, a soft illustration is shown instead.' },
+  { name: 'photo_path', label: 'Hero photo', type: 'media', media: { bucket: 'public-media', folder: 'hero', kind: 'image' }, help: 'Shown in a Polaroid frame on the landing page (always first in the photo stack). Add more photos of her in “Her photos”. If empty, a soft illustration is shown instead.' },
   { name: 'photo_alt', label: 'Photo description (for screen readers)', maxLength: 200 },
   { name: 'photo_caption', label: 'Handwritten caption under the photo', maxLength: 160 },
   { name: 'h-buttons', type: 'heading', label: 'Buttons & hints' },

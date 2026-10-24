@@ -70,6 +70,27 @@ function buildDemoDb() {
       FLIRTY_EXAMPLES.map((message) => ({ message })),
     ),
 
+    her_photos: rows(
+      'her',
+      [
+        { caption: 'that smile ♡', alt_text: 'A placeholder for a smiling photo of her' },
+        { caption: 'my favourite view', alt_text: 'A placeholder for a favourite photo of her' },
+        { caption: 'cutest human alive', alt_text: 'A placeholder for a candid photo of her' },
+        { caption: 'golden hour, golden girl', alt_text: 'A placeholder for a sunset photo of her' },
+      ],
+      {
+        image_path: null,
+        image_width: null,
+        image_height: null,
+        show_on_landing: true,
+        show_in_ribbon: true,
+        show_in_chapters: true,
+        show_on_reasons: true,
+        show_on_surprise: true,
+        show_on_soundtrack: true,
+      },
+    ),
+
     memories: rows(
       'mem',
       [

@@ -41,6 +41,7 @@ export const router = createBrowserRouter([
             children: [
               { index: true, lazy: page(() => import('@/admin/AdminDashboard')) },
               { path: 'landing', lazy: page(() => import('@/admin/managers/LandingManager')) },
+              { path: 'photos', lazy: page(() => import('@/admin/managers/HerPhotosManager')) },
               { path: 'messages', lazy: page(() => import('@/admin/managers/MessagesManager')) },
               { path: 'flirty', lazy: page(() => import('@/admin/managers/FlirtyLinesManager')) },
               { path: 'memories', lazy: page(() => import('@/admin/managers/MemoriesManager')) },

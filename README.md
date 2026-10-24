@@ -72,6 +72,29 @@ due while the tab is in the background, it appears as soon as she looks at the p
 She can pause them (“Pause these” or the footer switch); you can edit the lines in
 **Admin → Flirty pop-ups** and change the timing or switch them off in **Admin → Settings**.
 
+**Photos of her around the site** (managed in **Admin → Her photos**; each photo has switches for
+where it appears):
+
+- **Landing page:** the Polaroid becomes a little pile — every 3 seconds the front photo swings out
+  and tucks in at the back, with its own caption. Tap or swipe to shuffle, use the dots to jump; it
+  pauses on hover, keyboard focus, the pause button, in a background tab, when scrolled away, and
+  never moves on its own with “reduce motion” switched on. The landing-page photo is always first.
+- **Home page ribbon (“Look at you ♡”):** a slow, endless row of Polaroids (shown once at least 3
+  photos are ticked). Tap a photo to see it full-screen; “See them all” and “Pause the photos” are
+  there too.
+- **Chapter titles:** a small taped Polaroid hangs beside every chapter heading, a different photo per
+  chapter.
+- **Reasons page:** a pinned Polaroid above the cards (“Reason no. 0? Just look at you ♡”) — tap it
+  for another photo.
+- **Final Surprise:** her photo pops in at the end of the reveal (skipped if the surprise itself is a
+  photo or collage).
+- **Full-screen backgrounds:** a soft, see-through photo of her fills the screen behind **Soundtrack**,
+  **Open When…**, **Quiz** and the “Lost” (404) page — each page opens on a different photo, slowly
+  zooms and cross-fades between photos (still with “reduce motion”). On the **Final Surprise** it
+  starts blurred behind the gift box and comes into focus as the box opens.
+
+Until any are added, the chapter, Reasons, Surprise and background spots use the landing-page photo.
+
 **Demo mode:** when no Supabase keys are configured, the site shows placeholder content marked
 “Placeholder” / “Example”, and `/admin` offers a sandbox preview whose edits live only in the
 current browser tab. Demo content can never reach a real database.
@@ -188,10 +211,13 @@ In Supabase open **SQL Editor → New query**, paste each file's contents and cl
 | 1 | `supabase/migrations/20261024000000_init.sql` | All tables, constraints, indexes, `updated_at` triggers, role helpers, **RLS policies**, the three **storage buckets** and their policies |
 | 2 | `supabase/migrations/20261024000100_admin_functions.sql` | Atomic admin helpers (reorder rows, save a quiz question with its answers) |
 | 3 | `supabase/migrations/20261024000200_flirty_lines.sql` | Flirty pop-up lines table (with 20 example lines), its RLS policies and the pop-up settings |
-| 4 | `supabase/seed.sql` *(optional)* | Clearly-marked placeholder content (example messages, placeholder quiz questions, letters…) so the site isn't empty. Safe to re-run — it only fills empty tables |
-| 5 | `supabase/setup/verify.sql` *(optional)* | Read-only check: every table should show `rls_enabled = true` and the three buckets should be listed |
+| 4 | `supabase/migrations/20261024000300_her_photos.sql` | “Her photos” table (photo stack, ribbon, chapter Polaroids…), its RLS policies, and updated file-in-use / reorder helpers |
+| 5 | `supabase/seed.sql` *(optional)* | Clearly-marked placeholder content (example messages, placeholder quiz questions, letters…) so the site isn't empty. Safe to re-run — it only fills empty tables |
+| 6 | `supabase/setup/verify.sql` *(optional)* | Read-only check: every table should show `rls_enabled = true` and the three buckets should be listed |
 
-**Shortcut:** `supabase/setup/run-all.sql` contains files 1–4 in order — paste it once and run.
+**Shortcut:** `supabase/setup/run-all.sql` contains files 1–5 in order — paste it once and run.
+
+**Already set up before “Her photos” existed?** Just run file 4 on its own.
 
 All scripts are idempotent (safe to run again). If you use the Supabase CLI instead, `supabase db push`
 applies the migrations and `supabase db reset` also loads `seed.sql`.
@@ -297,6 +323,10 @@ Then, in Supabase **Authentication → URL Configuration**:
 3. Add a short **photo description** (read aloud by screen readers) and a caption.
 4. Click **Save changes**. The landing page now shows her photo.
 
+More photos of her: **Her photos → Add photo**, upload, add an optional caption, choose where it
+appears (landing stack, home ribbon, chapter titles, Reasons, Final Surprise, full-screen page backgrounds — all on by default),
+then **Create**. Use the arrows to set the order.
+
 For memories: **Memories → Add memory**, upload the photo, add a title, caption, date and category,
 then **Create**. Use the arrows to reorder, the switch to publish/unpublish, and **Featured** to show
 it under “Featured ♡”. Manage categories in the **Categories** panel at the top.
@@ -357,6 +387,7 @@ it under “Featured ♡”. Manage categories in the **Categories** panel at th
 |---|---|
 | **Dashboard** | Counts for every section, placeholders still to personalise, shortcuts |
 | **Landing page** | Label, heading, welcome message, affectionate line, hero photo, captions, button texts |
+| **Her photos** | Extra photos of her with captions, and switches for where each appears (landing stack, home ribbon, chapter titles, Reasons, Final Surprise, full-screen page backgrounds) |
 | **Cute messages** | Lines for the carousel, the secret note and the gift box |
 | **Flirty pop-ups** | The lines that pop up every few minutes (add, edit, reorder, publish) |
 | **Memories** | Photos, captions, dates, locations, categories, featured, order, publish |
@@ -407,7 +438,8 @@ Good to know:
 │   ├── migrations/
 │   │   ├── 20261024000000_init.sql            # schema, RLS, storage buckets & policies
 │   │   ├── 20261024000100_admin_functions.sql # reorder + save-quiz RPCs
-│   │   └── 20261024000200_flirty_lines.sql    # flirty pop-up lines + settings
+│   │   ├── 20261024000200_flirty_lines.sql    # flirty pop-up lines + settings
+│   │   └── 20261024000300_her_photos.sql      # photos of her shown around the site
 │   ├── seed.sql                               # optional placeholder content
 │   └── setup/
 │       ├── grant_roles.sql                    # make yourself admin, Nikitha viewer
@@ -450,8 +482,9 @@ or Supabase with the same row shapes.
 ## Quality checks that were run
 
 - **Database:** the migrations, seed and every RLS rule were exercised in real Postgres (PGlite) as
-  anonymous visitor, signed-up stranger, viewer and admin — 66 checks (private sections, role
-  escalation, quiz-attempt insert-only, storage folder policies, file-in-use checks, atomic quiz saves).
+  anonymous visitor, signed-up stranger, viewer and admin — 92 checks (private sections, role
+  escalation, quiz-attempt insert-only, storage folder policies, file-in-use checks, atomic quiz saves,
+  flirty lines and her photos).
 - **Live integration:** sign-in, public reads, signed URLs, admin writes and uploads were tested
   end-to-end against a simulated Supabase API.
 - **Accessibility:** axe-core (WCAG 2.2 AA + best practices) reports 0 issues on 23 page states;

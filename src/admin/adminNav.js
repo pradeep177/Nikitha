@@ -1,6 +1,7 @@
 import {
   BarChart3,
   CalendarHeart,
+  Camera,
   Gift,
   Heart,
   HeartPulse,
@@ -20,6 +21,7 @@ import {
 export const ADMIN_NAV = [
   { path: '/admin', label: 'Dashboard', icon: LayoutDashboard, end: true },
   { path: '/admin/landing', label: 'Landing page', icon: House },
+  { path: '/admin/photos', label: 'Her photos', icon: Camera, table: 'her_photos' },
   { path: '/admin/messages', label: 'Cute messages', icon: MessageSquareHeart, table: 'cute_messages' },
   { path: '/admin/flirty', label: 'Flirty pop-ups', icon: HeartPulse, table: 'flirty_lines' },
   { path: '/admin/memories', label: 'Memories', icon: Images, table: 'memories' },

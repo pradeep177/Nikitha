@@ -15,6 +15,8 @@ export const mapHero = (row, url) => row && { ...row, photo_url: url(BUCKET.publ
 
 export const mapMemory = (row, url) => ({ ...row, image_url: url(BUCKET.public, row.image_path) })
 
+export const mapHerPhoto = (row, url) => ({ ...row, image_url: url(BUCKET.public, row.image_path) })
+
 export const mapChat = (row, url) => ({ ...row, image_url: url(BUCKET.private, row.image_path) })
 
 export const mapTimeline = (row, url) => ({ ...row, image_url: url(BUCKET.public, row.image_path) })
@@ -50,6 +52,7 @@ export function mediaRefs(table, row) {
   const refs = {
     hero_content: [[BUCKET.public, row.photo_path]],
     memories: [[BUCKET.public, row.image_path]],
+    her_photos: [[BUCKET.public, row.image_path]],
     timeline_entries: [[BUCKET.public, row.image_path]],
     chat_screenshots: [[BUCKET.private, row.image_path]],
     soundtrack_tracks: [

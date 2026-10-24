@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Info, Puzzle } from 'lucide-react'
 import PageShell from '@/components/PageShell'
+import PhotoBackdrop from '@/components/PhotoBackdrop'
 import ContentState from '@/components/ContentState'
 import Mascot from '@/components/Mascot'
 import SoundToggle from '@/components/SoundToggle'
@@ -147,6 +148,7 @@ export default function QuizPage() {
 
   return (
     <PageShell chapterId="quiz">
+      <PhotoBackdrop start={2} />
       <ContentState
         query={{ ...query, data: query.data === undefined ? undefined : playable }}
         loadingMessage="Thinking of tricky questions…"

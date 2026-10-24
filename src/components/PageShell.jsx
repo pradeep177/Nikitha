@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion'
 import ChapterIndicator from './ChapterIndicator'
 import ChapterFooter from './ChapterFooter'
+import ChapterPolaroid from './ChapterPolaroid'
 import SectionGate from './SectionGate'
 import { Squiggle } from './illustrations/Doodles'
 import { getChapter, personalize } from '@/app/chapters'
@@ -47,6 +48,7 @@ export default function PageShell({ chapterId, title, subtitle, children, showHe
           animate="show"
           variants={{ show: { transition: { staggerChildren: 0.08 } } }}
         >
+          <ChapterPolaroid chapterId={chapter?.id} name={settings.her_name} />
           <motion.div variants={headerItem}>
             <ChapterIndicator chapterId={chapterId} />
           </motion.div>

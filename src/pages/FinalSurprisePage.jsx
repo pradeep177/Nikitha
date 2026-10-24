@@ -6,10 +6,13 @@ import GiftBox from '@/components/GiftBox'
 import Confetti from '@/components/Confetti'
 import SmartImage from '@/components/SmartImage'
 import LoadingState from '@/components/LoadingState'
+import Polaroid from '@/components/Polaroid'
+import PhotoBackdrop from '@/components/PhotoBackdrop'
 import { HeartShape } from '@/components/illustrations/Doodles'
 import { personalize } from '@/app/chapters'
 import { DEFAULT_FINAL_SURPRISE } from '@/lib/defaults'
 import { useContent } from '@/hooks/useContent'
+import { useHerPhotos } from '@/hooks/useHerPhotos'
 import { useSiteSettings } from '@/hooks/useSiteSettings'
 import { useSound } from '@/hooks/useSound'
 import { safeExternalUrl, safeMediaUrl } from '@/utils/format'
@@ -61,12 +64,15 @@ function Extra({ surprise }) {
   return null
 }
 
-function Surprise({ surprise, name }) {
+function Surprise({ surprise, name, photo }) {
   const reduce = useReducedMotion()
   const sound = useSound()
   const [stage, setStage] = useState('closed')
   const [confetti, setConfetti] = useState(0)
   const paragraphs = personalize(surprise.message, name).split(/\n\s*\n/).filter(Boolean)
+  // Don't stack two photos when the surprise itself is already a photo or collage.
+  const showsOwnPhoto =
+    (surprise.surprise_type === 'photo' && surprise.image_url) || (surprise.surprise_type === 'collage' && surprise.collage_urls?.length)
 
   useEffect(() => {
     if (stage !== 'opening') return undefined
@@ -85,6 +91,7 @@ function Surprise({ surprise, name }) {
 
   return (
     <div className="mx-auto max-w-2xl px-4 sm:px-5">
+      <PhotoBackdrop start={3} blurred={stage !== 'revealed'} />
       <Confetti trigger={confetti} />
       <AnimatePresence mode="wait">
         {stage !== 'revealed' ? (
@@ -129,6 +136,18 @@ function Surprise({ surprise, name }) {
             </div>
             <motion.div className="relative" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 + paragraphs.length * 0.6 }}>
               <Extra surprise={surprise} />
+              {photo && !showsOwnPhoto && (
+                <motion.figure
+                  className="relative mx-auto mt-8 w-[min(62%,15rem)]"
+                  initial={{ opacity: 0, scale: 0.3, rotate: -25, y: 30 }}
+                  animate={{ opacity: 1, scale: 1, rotate: -4, y: 0 }}
+                  transition={{ delay: 1.3 + paragraphs.length * 0.6, type: 'spring', stiffness: 160, damping: 11 }}
+                >
+                  <Polaroid photo={photo} name={name} tape padding="p-3 pb-4" captionClassName="pt-2 text-2xl" sizes="240px" />
+                  <HeartShape className="absolute -top-4 -right-5 size-9 rotate-12 text-berry drop-shadow-sm" />
+                  <HeartShape className="absolute -bottom-3 -left-5 size-7 -rotate-12 text-rose drop-shadow-sm" />
+                </motion.figure>
+              )}
               {surprise.signoff && <p className="mt-8 font-hand text-3xl text-rose">{personalize(surprise.signoff, name)} ♡</p>}
               <button
                 type="button"
@@ -151,11 +170,16 @@ function Surprise({ surprise, name }) {
 export default function FinalSurprisePage() {
   const { settings } = useSiteSettings()
   const query = useContent('getFinalSurprise')
+  const { photos } = useHerPhotos('surprise')
   const surprise = { ...DEFAULT_FINAL_SURPRISE, ...(query.data ?? {}) }
 
   return (
     <PageShell chapterId="surprise" title={surprise.heading} subtitle={surprise.intro}>
-      {query.loading ? <LoadingState message="Wrapping something special…" /> : <Surprise surprise={surprise} name={settings.her_name} />}
+      {query.loading ? (
+        <LoadingState message="Wrapping something special…" />
+      ) : (
+        <Surprise surprise={surprise} name={settings.her_name} photo={photos[0]} />
+      )}
     </PageShell>
   )
 }

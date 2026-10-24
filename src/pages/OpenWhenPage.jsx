@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { Mail, X } from 'lucide-react'
 import PageShell from '@/components/PageShell'
+import PhotoBackdrop from '@/components/PhotoBackdrop'
 import ContentState from '@/components/ContentState'
 import Envelope from '@/components/Envelope'
 import SmartImage from '@/components/SmartImage'
@@ -151,6 +152,7 @@ export default function OpenWhenPage() {
   const query = useContent('listLetters')
   return (
     <PageShell chapterId="open-when">
+      <PhotoBackdrop start={1} />
       <ContentState
         query={query}
         loadingMessage="Sealing the envelopes…"

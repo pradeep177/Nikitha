@@ -14,6 +14,7 @@ import {
   mapChat,
   mapFinalSurprise,
   mapHero,
+  mapHerPhoto,
   mapLetter,
   mapMemory,
   mapQuizQuestion,
@@ -78,6 +79,10 @@ const live = {
 
   listFlirtyLines: () => run(ordered('flirty_lines')),
 
+  async listHerPhotos() {
+    return withMedia('her_photos', await run(ordered('her_photos')), mapHerPhoto)
+  },
+
   async listMemories() {
     const [memories, categories] = await Promise.all([
       run(ordered('memories')),
@@ -137,6 +142,7 @@ const demoApi = {
   getHero: () => demo((db) => mapHero(db.hero_content, demoUrl)),
   listCuteMessages: () => demo((db) => sortPublished(db.cute_messages)),
   listFlirtyLines: () => demo((db) => sortPublished(db.flirty_lines)),
+  listHerPhotos: () => demo((db) => sortPublished(db.her_photos).map((p) => mapHerPhoto(p, demoUrl))),
   listMemories: () =>
     demo((db) => ({
       memories: sortPublished(db.memories).map((m) => mapMemory(m, demoUrl)),

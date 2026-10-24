@@ -1,0 +1,271 @@
+@import 'tailwindcss';
+
+/* Only devices with a real hover pointer get hover-to-reveal behaviour. */
+@custom-variant can-hover (@media (hover: hover) and (pointer: fine));
+
+/* ------------------------------------------------------------------
+   Design tokens — "Our Little Universe" pastel stationery palette.
+   Colour themes (see [data-theme] below) only override these variables,
+   so every component automatically follows the active theme.
+------------------------------------------------------------------- */
+@theme {
+  --font-sans: 'Nunito Variable', 'Nunito', ui-rounded, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-hand: 'Caveat', 'Segoe Print', 'Bradley Hand', cursive;
+
+  --color-cream: #fff8f1;
+  --color-paper: #fffdf9;
+  --color-blush: #fde2e7;
+  --color-blush-deep: #f7c1cf;
+  --color-lavender: #ebe4fb;
+  --color-lavender-deep: #cbbcf0;
+  --color-peach: #ffe4d4;
+  --color-peach-deep: #ffc7a8;
+  --color-butter: #fff4c7;
+  --color-butter-deep: #ffe28a;
+  --color-rose: #a35a6e; /* deep enough for text: 4.9:1 on paper */
+  --color-berry: #d9487c;
+  --color-berry-deep: #b3315f;
+  --color-ink: #4a3340;
+  --color-ink-soft: #78606d;
+
+  --shadow-soft: 0 10px 30px -14px rgb(179 49 95 / 0.35);
+  --shadow-card: 0 1px 3px rgb(74 51 64 / 0.06), 0 14px 32px -16px rgb(179 49 95 / 0.32);
+  --shadow-lift: 0 2px 6px rgb(74 51 64 / 0.08), 0 24px 44px -18px rgb(179 49 95 / 0.42);
+
+  --animate-twinkle: twinkle 3.6s ease-in-out infinite;
+  --animate-drift: drift 80s linear infinite;
+  --animate-float-up: float-up 16s linear infinite;
+  --animate-bob: bob 4.5s ease-in-out infinite;
+  --animate-spin-slow: spin 40s linear infinite;
+
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 0.2;
+      transform: scale(0.75);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+  }
+  @keyframes drift {
+    from {
+      transform: translateX(-35vw);
+    }
+    to {
+      transform: translateX(135vw);
+    }
+  }
+  @keyframes float-up {
+    0% {
+      transform: translateY(0) rotate(-10deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.75;
+    }
+    85% {
+      opacity: 0.55;
+    }
+    100% {
+      transform: translateY(-115vh) rotate(12deg);
+      opacity: 0;
+    }
+  }
+  @keyframes bob {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+}
+
+/* ---------------- Colour themes (selectable in admin settings) --------------- */
+[data-theme='lavender'] {
+  --color-blush: #ece6fb;
+  --color-blush-deep: #d6c9f6;
+  --color-lavender: #fde2ec;
+  --color-lavender-deep: #f2bfd2;
+  --color-rose: #7d62a8;
+  --color-berry: #8b5cd6;
+  --color-berry-deep: #6a3fb8;
+  --shadow-soft: 0 10px 30px -14px rgb(106 63 184 / 0.35);
+  --shadow-card: 0 1px 3px rgb(74 51 64 / 0.06), 0 14px 32px -16px rgb(106 63 184 / 0.3);
+  --shadow-lift: 0 2px 6px rgb(74 51 64 / 0.08), 0 24px 44px -18px rgb(106 63 184 / 0.4);
+}
+
+[data-theme='peach'] {
+  --color-blush: #ffe6d9;
+  --color-blush-deep: #ffc9ad;
+  --color-rose: #a8593d;
+  --color-berry: #e06a4c;
+  --color-berry-deep: #b54a2f;
+  --shadow-soft: 0 10px 30px -14px rgb(181 74 47 / 0.35);
+  --shadow-card: 0 1px 3px rgb(74 51 64 / 0.06), 0 14px 32px -16px rgb(181 74 47 / 0.3);
+  --shadow-lift: 0 2px 6px rgb(74 51 64 / 0.08), 0 24px 44px -18px rgb(181 74 47 / 0.4);
+}
+
+/* ---------------------------------- Base ---------------------------------- */
+@layer base {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    text-size-adjust: 100%;
+  }
+
+  html,
+  body {
+    overflow-x: clip;
+  }
+
+  body {
+    min-height: 100dvh;
+    background-color: var(--color-cream);
+    /* soft "dotted stationery" paper */
+    background-image: radial-gradient(color-mix(in srgb, var(--color-rose) 16%, transparent) 1px, transparent 1.4px);
+    background-size: 24px 24px;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-berry);
+    outline-offset: 3px;
+    border-radius: 0.5rem;
+  }
+
+  ::selection {
+    background: var(--color-blush-deep);
+    color: var(--color-ink);
+  }
+
+  img {
+    -webkit-user-drag: none;
+  }
+}
+
+/* ------------------------------- Components ------------------------------- */
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 800;
+    line-height: 1.2;
+    text-align: center;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease,
+      color 0.2s ease;
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .btn:active {
+    transform: scale(0.97);
+  }
+  .btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background-color: var(--color-berry-deep);
+    color: #fff;
+    box-shadow: var(--shadow-soft);
+  }
+  .btn-primary:hover:not(:disabled) {
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-2px);
+  }
+
+  .btn-soft {
+    background-color: var(--color-paper);
+    color: var(--color-berry-deep);
+    border: 2px solid var(--color-blush-deep);
+  }
+  .btn-soft:hover:not(:disabled) {
+    background-color: var(--color-blush);
+    transform: translateY(-2px);
+  }
+
+  .btn-ghost {
+    color: var(--color-ink-soft);
+  }
+  .btn-ghost:hover:not(:disabled) {
+    color: var(--color-berry-deep);
+    background-color: color-mix(in srgb, var(--color-blush) 70%, transparent);
+  }
+
+  .card-paper {
+    background-color: var(--color-paper);
+    border-radius: 1.75rem;
+    border: 1px solid color-mix(in srgb, var(--color-blush-deep) 55%, transparent);
+    box-shadow: var(--shadow-card);
+  }
+
+  .sticker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    border-radius: 9999px;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    background-color: var(--color-paper);
+    color: var(--color-berry-deep);
+    border: 1.5px dashed var(--color-blush-deep);
+  }
+
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -4rem;
+    z-index: 100;
+    padding: 0.75rem 1.25rem;
+    border-radius: 9999px;
+    background: var(--color-berry-deep);
+    color: #fff;
+    font-weight: 800;
+    transition: top 0.2s ease;
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  .safe-bottom {
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+}
+
+/* Countdown bar on the flirty pop-up. */
+@keyframes olu-shrink {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+/* Respect the visitor's reduced-motion preference for all CSS-driven loops. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

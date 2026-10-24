@@ -1,0 +1,36 @@
+import {
+  BarChart3,
+  CalendarHeart,
+  Gift,
+  Heart,
+  HeartPulse,
+  House,
+  Images,
+  LayoutDashboard,
+  Mail,
+  MessageCircleHeart,
+  MessageSquareHeart,
+  Music,
+  Puzzle,
+  Settings,
+  Smile,
+} from 'lucide-react'
+
+/** Admin sections, in sidebar order. `table` is used for the dashboard counts. */
+export const ADMIN_NAV = [
+  { path: '/admin', label: 'Dashboard', icon: LayoutDashboard, end: true },
+  { path: '/admin/landing', label: 'Landing page', icon: House },
+  { path: '/admin/messages', label: 'Cute messages', icon: MessageSquareHeart, table: 'cute_messages' },
+  { path: '/admin/flirty', label: 'Flirty pop-ups', icon: HeartPulse, table: 'flirty_lines' },
+  { path: '/admin/memories', label: 'Memories', icon: Images, table: 'memories' },
+  { path: '/admin/quiz', label: 'Quiz', icon: Puzzle, table: 'quiz_questions' },
+  { path: '/admin/chats', label: 'Chat screenshots', icon: MessageCircleHeart, table: 'chat_screenshots' },
+  { path: '/admin/reasons', label: 'Reasons I love you', icon: Heart, table: 'love_notes' },
+  { path: '/admin/timeline', label: 'Timeline', icon: CalendarHeart, table: 'timeline_entries' },
+  { path: '/admin/moods', label: 'Mood messages', icon: Smile, table: 'mood_messages' },
+  { path: '/admin/soundtrack', label: 'Soundtrack', icon: Music, table: 'soundtrack_tracks' },
+  { path: '/admin/letters', label: 'Open When letters', icon: Mail, table: 'open_when_letters' },
+  { path: '/admin/surprise', label: 'Final surprise', icon: Gift },
+  { path: '/admin/quiz-results', label: 'Quiz results', icon: BarChart3 },
+  { path: '/admin/settings', label: 'Settings', icon: Settings },
+]

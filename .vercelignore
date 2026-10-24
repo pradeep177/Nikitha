@@ -1,0 +1,9 @@
+# Files never uploaded by `vercel deploy` from this computer
+.env
+.env.*
+!.env.example
+node_modules
+dist
+.git
+.vercel
+*.log

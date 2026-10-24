@@ -26,3 +26,5 @@ desktop.ini
 
 # vercel
 .vercel
+.env*
+!.env.example
